@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dajana ❤️</title>
+  <style>
+    :root{
+      --bg1:#ff4d6d;
+      --bg2:#ffb3c1;
+      --card:#ffffffee;
+      --text:#1f1f1f;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at 20% 20%, var(--bg2), transparent 55%),
+                  radial-gradient(circle at 80% 30%, #ffd6e0, transparent 55%),
+                  linear-gradient(135deg, #ff758f, #ff7eb3);
+      color:var(--text);
+      overflow:hidden;
+      padding:16px;
+    }
+    .card{
+      width:min(520px, 92vw);
+      background:var(--card);
+      border-radius:20px;
+      padding:22px 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.18);
+      position:relative;
+      backdrop-filter: blur(8px);
+    }
+    h1{
+      margin:0 0 6px 0;
+      font-size:26px;
+      letter-spacing:.2px;
+      text-align:center;
+    }
+    .sub{
+      text-align:center;
+      opacity:.85;
+      margin-bottom:16px;
+      line-height:1.35;
+    }
+
+    .arena{
+      position:relative;
+      width:100%;
+      height:240px;
+      border-radius:16px;
+      background: linear-gradient(180deg, #fff, #fff0);
+      border: 1px dashed rgba(0,0,0,.12);
+      overflow:hidden;
+    }
+
+    .question{
+      position:absolute;
+      inset:16px 16px auto 16px;
+      text-align:center;
+      font-size:20px;
+      font-weight:700;
+    }
+    .hint{
+      position:absolute;
+      inset:auto 16px 16px 16px;
+      text-align:center;
+      font-size:13px;
+      opacity:.7;
+    }
+
+    .btn{
+      position:absolute;
+      padding:14px 18px;
+      border:none;
+      border-radius:999px;
+      font-weight:800;
+      font-size:16px;
+      cursor:pointer;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 10px 22px rgba(0,0,0,.15);
+      transition: transform .15s ease, filter .15s ease, opacity .15s ease;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active{ transform: translate(-50%, -50%) scale(.96); }
+
+    #yes{
+      left:35%;
+      top:62%;
+      background: linear-gradient(135deg, #2ce3a2, #00c389);
+      color:#062c1f;
+    }
+    #no{
+      left:65%;
+      top:62%;
+      background: linear-gradient(135deg, #ff3b30, #ff7a70);
+      color:#fff;
+    }
+
+    .bubble{
+      margin-top:14px;
+      background:#fff;
+      border-radius:16px;
+      padding:12px 14px;
+      border: 1px solid rgba(0,0,0,.08);
+      min-height:54px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      font-size:15px;
+    }
+
+    .footer{
+      margin-top:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      font-size:12px;
+      opacity:.65;
+    }
+    .tag{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,.08);
+      background:#fff;
+      white-space:nowrap;
+    }
+
+    /* Confetti */
+    .confetti{
+      position:fixed;
+      top:-10px;
+      width:10px;
+      height:14px;
+      border-radius:2px;
+      opacity:.95;
+      pointer-events:none;
+      animation: fall linear forwards;
+    }
+    @keyframes fall{
+      to{
+        transform: translateY(110vh) rotate(720deg);
+        opacity:1;
+      }
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.45);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .modal{
+      width:min(520px, 92vw);
+      background:#fff;
+      border-radius:20px;
+      padding:20px 18px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.25);
+      text-align:center;
+    }
+    .modal h2{ margin:0 0 10px; }
+    .modal p{ margin:0 0 14px; line-height:1.4; }
+    .close{
+      display:inline-block;
+      padding:12px 16px;
+      border-radius:999px;
+      border:none;
+      font-weight:800;
+      background: linear-gradient(135deg, #ff4d6d, #ff7eb3);
+      color:#fff;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Dajana ❤️</h1>
+    <div class="sub">
+      Imam jedno ozbiljno pitanje… ali u romantičnom smislu 😄
+    </div>
+
+    <div class="arena" id="arena">
+      <div class="question" id="q">Hoćeš li biti moj Valentino? 💘</div>
+      <button class="btn" id="yes">DA ✅</button>
+      <button class="btn" id="no">NE ❌</button>
+      <div class="hint" id="hint">Savjet: probaj oba dugmeta… ako smiješ 😈</div>
+    </div>
+
+    <div class="bubble" id="bubble">Klikni nešto, obećavam da je bezopasno 😇</div>
+
+    <div class="footer">
+      <div class="tag" id="stats">NE: 0</div>
+      <div class="tag" id="love">Made with ❤️</div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h2>Jej! 🥰</h2>
+      <p id="finalText">
+        Dajana, upravo si zvanično prihvatila najromantičniji ugovor ikad. <br/>
+        Spremi se za zagrljaj + čokoladu + izlazak. 💐🍫
+      </p>
+      <button class="close" id="close">Zatvori ✨</button>
+    </div>
+  </div>
+
+  <script>
+    const yes = document.getElementById('yes');
+    const no = document.getElementById('no');
+    const arena = document.getElementById('arena');
+    const bubble = document.getElementById('bubble');
+    const stats = document.getElementById('stats');
+    const hint = document.getElementById('hint');
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('close');
+
+    let noCount = 0;
+    let yesScale = 1;
+
+    const lines = [
+      "NE? Sigurna si? 😏",
+      "Ok… ali ja sam uporan. 😄",
+      "Dajanaaa… nemoj tako. 🥺",
+      "Ajde, samo jednom DA… 🙃",
+      "NE dugme je počelo da sumnja u sebe… 🤨",
+      "Posljednja šansa za NE (šalim se 😈)",
+      "Ovo je već ljubavna komedija. 🎬😂",
+      "NE pokušava pobjeći… 🏃‍♂️💨",
+      "Uredu… ali DA je prelijepo dugme. 🥰"
+    ];
+
+    function setBubble(text){ bubble.textContent = text; }
+
+    function rand(min, max){ return Math.random() * (max - min) + min; }
+
+    function moveNoButton() {
+      const rect = arena.getBoundingClientRect();
+      // sigurnosne margine da dugme ne ode van
+      const marginX = 70;
+      const marginY = 70;
+
+      const x = rand(marginX, rect.width - marginX);
+      const y = rand(90, rect.height - marginY);
+
+      no.style.left = x + "px";
+      no.style.top = y + "px";
+    }
+
+    function growYes() {
+      yesScale = Math.min(2.1, yesScale + 0.18);
+      yes.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+      yes.style.filter = `brightness(${1 + (yesScale-1)*0.25})`;
+    }
+
+    function updateStats(){
+      stats.textContent = `NE: ${noCount}`;
+    }
+
+    function confettiBurst(count = 120){
+      for(let i=0;i<count;i++){
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random()*100 + 'vw';
+        c.style.animationDuration = (Math.random()*1.4 + 1.6) + 's';
+        c.style.transform = `rotate(${Math.random()*360}deg)`;
+        c.style.background = `hsl(${Math.floor(Math.random()*360)}, 90%, 60%)`;
+        c.style.width = (Math.random()*8 + 6) + 'px';
+        c.style.height = (Math.random()*10 + 8) + 'px';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 3500);
+      }
+    }
+
+    no.addEventListener('click', () => {
+      noCount++;
+      updateStats();
+
+      const msg = lines[Math.min(lines.length-1, noCount-1)];
+      setBubble(msg);
+
+      // poslije par puta NE počne "bježati"
+      if(noCount >= 3){
+        moveNoButton();
+        hint.textContent = "NE je brzo… ali DA je bliže tvom srcu 😄";
+      }
+
+      // DA raste kako NE klikće
+      growYes();
+
+      // nakon dosta NE, NE se “pretvara” u šaljivo dugme
+      if(noCount === 6){
+        no.textContent = "Ma hajde 😅";
+      }
+      if(noCount >= 9){
+        no.textContent = "Ne znam više 😂";
+      }
+    });
+
+    // malo “neuhvatljivo” i na hover/touchmove (radi i na telefonu ponekad)
+    no.addEventListener('mouseenter', () => { if(noCount >= 2) moveNoButton(); });
+    no.addEventListener('touchstart', () => { if(noCount >= 2) moveNoButton(); }, {passive:true});
+
+    yes.addEventListener('click', () => {
+      setBubble("Znao sam! ❤️");
+      confettiBurst();
+      overlay.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      // reset mali “after party”
+      confettiBurst(40);
+    });
+
+    // inicijalna pozicija za mobile layout
+    (function init(){
+      updateStats();
+      // precizno centriranje u areni (px umjesto %)
+      const r = arena.getBoundingClientRect();
+      yes.style.left = (r.width*0.35) + "px";
+      yes.style.top  = (r.height*0.62) + "px";
+      no.style.left  = (r.width*0.65) + "px";
+      no.style.top   = (r.height*0.62) + "px";
+    })();
+
+    window.addEventListener('resize', () => {
+      // ne diramo ako je već bježalo; samo osiguraj da ne ode van
+      const r = arena.getBoundingClientRect();
+      const nx = parseFloat(no.style.left || 0);
+      const ny = parseFloat(no.style.top || 0);
+      if(nx > r.width-40 || ny > r.height-40) moveNoButton();
+    });
+  </script>
+</body>
+</html>
